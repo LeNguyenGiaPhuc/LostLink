@@ -4,30 +4,30 @@
 
 `PLANNING`
 
-LostLink has not entered implementation. The Planning Baseline exists as a reviewable draft but has not been frozen or approved as Planning Baseline v1.
+LostLink has not entered implementation. Planning Baseline v1 was explicitly approved and frozen on 2026-08-24; implementation still requires separate authorization.
 
 ## Current Milestone
 
-**Planning Baseline Review and Freeze** - `IN_PROGRESS`
+**Milestone 1 - Executable Service and Infrastructure Foundation** - `NOT_STARTED`
 
-The current work is the final pre-implementation gate: human review of the planning documents, 72 atomic requirements, and completed requirement traceability before explicit approval to freeze Planning Baseline v1. The initial repository, runtime/framework, broker/object-storage, and local-configuration decisions required for Milestone 1 have been approved.
+Planning Baseline Review and Freeze is `COMPLETED`. Milestone 1 is the next milestone, but no implementation planning or implementation work has started without separate authorization.
 
 ## Overall Status
 
 `IN_PROGRESS`
 
-- Planning readiness: 4 / 5 actions completed.
-- Completed readiness actions: original source documents are present; the planning documentation set has been generated; initial Milestone 1 technology decisions have been approved and documented; all 72 requirements have planning-level traceability.
-- Remaining readiness action: human review and explicit Planning Baseline v1 freeze approval.
-- Planning Baseline v1 is `READY_FOR_REVIEW`; it is not `COMPLETED` or frozen.
+- Planning readiness: 5 / 5 actions completed.
+- Completed readiness actions: original source documents are present; the planning documentation set has been generated; initial Milestone 1 technology decisions have been approved and documented; all 72 requirements have planning-level traceability; human review and freeze approval are complete.
+- Planning Baseline v1 is `COMPLETED` and `FROZEN` as of 2026-08-24.
+- Project phase remains `PLANNING` until implementation is separately authorized.
 - Implementation progress: 0%.
 
 ## Milestone Progress
 
 | Milestone | Status | Notes |
 |---|---|---|
-| Planning Baseline Review and Freeze (pre-implementation gate) | `IN_PROGRESS` | Immediate technology decisions and `TRACEABILITY.md` are complete; human review and freeze approval remain. |
-| Milestone 1 - Executable Service and Infrastructure Foundation | `NOT_STARTED` | Initial technology dependencies are resolved; awaiting Planning Baseline v1 freeze and explicit implementation authorization. |
+| Planning Baseline Review and Freeze (pre-implementation gate) | `COMPLETED` | Planning Baseline v1 was explicitly approved and frozen on 2026-08-24. |
+| Milestone 1 - Executable Service and Infrastructure Foundation | `NOT_STARTED` | Baseline and initial technology dependencies are ready; awaiting explicit authorization to create the Milestone 1 implementation plan. |
 | Milestone 2 - Identity, Gateway, and Edge Security | `NOT_STARTED` | Depends on Milestone 1 and approved authentication/internal-credential decisions. |
 | Milestone 3 - Reports, Moderation, Privacy, and Object Storage | `NOT_STARTED` | Depends on Milestones 1-2 and unresolved report/privacy business rules. |
 | Milestone 4 - Domain Events and ACTIVE-Report Read Model | `NOT_STARTED` | Depends on Milestones 1 and 3 and the Phase 1 Outbox/DLQ boundary. |
@@ -55,11 +55,11 @@ The current work is the final pre-implementation gate: human review of the plann
 - Repository, framework/runtime, broker/object-storage, and local-configuration decisions approved for Milestone 1.
 - All 72 requirements mapped to owner, primary milestone, planned verification, and initial `NOT_STARTED` status in `docs/TRACEABILITY.md`.
 - Planning consistency review completed without identifying a new `SOURCE_CONFLICT`.
+- Planning Baseline v1 explicitly approved and frozen on 2026-08-24.
 
 ## In Progress
 
-- Awaiting human review of the Planning Baseline, 72 atomic requirements, and requirement traceability.
-- Awaiting explicit Planning Baseline v1 freeze approval.
+- None. Waiting for explicit authorization to begin Milestone 1 implementation planning.
 
 No implementation feature is currently in progress.
 
@@ -84,9 +84,9 @@ The complete decision register remains in `docs/OPEN_QUESTIONS.md`.
 
 ## Next Actions
 
-1. Review `docs/TRACEABILITY.md` and the Planning Baseline review result.
-2. Approve or reject the Planning Baseline v1 freeze.
-3. If approved, update the project phase gate and prepare Milestone 1 implementation planning.
+1. Obtain explicit authorization to begin Milestone 1 implementation planning.
+2. Decide only implementation details that block Milestone 1, such as supported versions, workspace/package tooling, and health/configuration conventions.
+3. Create and review a detailed Milestone 1 implementation plan before scaffolding.
 4. Resolve remaining questions only when they become blocking for their relevant feature or milestone.
 
 ## Implementation Status
@@ -118,6 +118,7 @@ Testing: `NOT_STARTED`
 - Codex may update factual progress such as implemented requirements, passing tests, or technically completed work.
 - Codex must not mark the Planning Baseline, a milestone, or a project phase as `COMPLETED`, or move the project to the next phase, when human review or approval is required.
 - In that situation, Codex must record `READY_FOR_REVIEW` in Notes or current status and wait for explicit human approval.
+- Planning Baseline v1 is frozen. Future changes must identify affected requirements and planning documents and receive explicit human approval; the baseline must not drift silently.
 
 ## Update Rules
 

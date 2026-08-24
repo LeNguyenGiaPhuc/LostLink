@@ -10,6 +10,18 @@ It does not replace `docs/REQUIREMENTS.md` or its acceptance criteria. Original 
 
 This initial baseline contains planning coverage only. LostLink has no application implementation or automated tests, so every requirement begins as `NOT_STARTED` with no implementation or test evidence.
 
+## Baseline Metadata
+
+| Field | Value |
+| --- | --- |
+| Version | Planning Baseline v1 |
+| Baseline status | `FROZEN` |
+| Human approval date | 2026-08-24 |
+| Project phase | `PLANNING` |
+| Implementation status | `NOT_STARTED` |
+
+The frozen baseline remains subject to controlled change. Requirement additions or changes must be explicitly approved and traced before implementation.
+
 ## Verification Status Model
 
 | Status | Meaning |

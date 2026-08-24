@@ -2,6 +2,15 @@
 
 This document structures requirements derived from the primary source documents. It does not replace them. If this document conflicts with a source document, the source document has higher authority.
 
+## Baseline Status
+
+- **Version:** Planning Baseline v1
+- **Status:** `FROZEN`
+- **Human approval date:** 2026-08-24
+- **Implementation state at freeze:** `NOT_STARTED`
+
+Freezing establishes the reviewed starting point; it does not make every `NEEDS_DECISION` an implementation blocker and does not authorize implementation. A new or changed requirement requires explicit human approval and a documented impact review across architecture, service ownership, APIs/events, milestones, tests, and `docs/TRACEABILITY.md`.
+
 Source documents:
 
 - `docs/source/LostLink_Microservices.docx`
