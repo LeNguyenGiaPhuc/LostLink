@@ -1,6 +1,6 @@
 # LostLink Accepted Architecture Decisions
 
-Only decisions explicitly supported by the primary sources are recorded as accepted. Unresolved choices belong in `docs/OPEN_QUESTIONS.md`.
+Accepted decisions in this document are either established by the primary sources or explicitly approved during Planning Baseline review. Unresolved choices belong in `docs/OPEN_QUESTIONS.md`.
 
 ## DEC-001 - Use Microservices Architecture
 
@@ -234,3 +234,75 @@ Every required service and infrastructure dependency must be represented in the 
 
 ### Source
 - Architecture design, "Development and Deployment" and "Testing and Verification"
+
+## DEC-014 - Use a Monorepo with Independent Service Projects
+
+### Status
+Accepted
+
+### Decision
+LostLink shall use one Git repository. Web Client, API Gateway, Identity Service, Lost-and-Found Service, Matching Service, and AI Inference Service shall each remain a separate project with an independent process, start/build boundary, container, and deployment lifecycle.
+
+### Rationale
+A monorepo minimizes coordination and local-development overhead for one developer while keeping the independently deployable service boundaries required by the architecture.
+
+### Consequences
+Repository proximity does not permit services to share entities, repositories, domain implementations, or business logic. Any shared package remains limited to suitable versioned contracts. Exact directory names and monorepo tooling are implementation-planning details and are not decided here.
+
+### Source
+- Planning Baseline review, `Q-038`
+- ARCH-002 and ARCH-006
+
+## DEC-015 - Use TypeScript for the Web and Core Backend, and Python for AI Inference
+
+### Status
+Accepted
+
+### Decision
+Web Client shall use React, TypeScript, and Vite. API Gateway, Identity Service, Lost-and-Found Service, and Matching Service shall use Node.js, TypeScript, and NestJS. AI Inference Service shall use Python and FastAPI.
+
+### Rationale
+The TypeScript-first core provides consistent backend structure and testing conventions while remaining practical for one developer. Python is isolated to the stateless AI boundary, where its inference ecosystem is useful without making the core workflow depend on it.
+
+### Consequences
+The project operates two runtimes. Matching Service retains Rule-based filtering, scoring, result persistence, and AI orchestration in Node.js; Python performs optional inference only. Exact runtime/framework versions, package managers, and AI libraries remain undecided.
+
+### Source
+- Planning Baseline review, `Q-039`
+- DEC-005 through DEC-008
+
+## DEC-016 - Use RabbitMQ and MinIO in Phase 1
+
+### Status
+Accepted
+
+### Decision
+RabbitMQ shall implement the Phase 1 Message Broker, and MinIO shall provide the local S3-compatible Object Storage implementation.
+
+### Rationale
+RabbitMQ supports the project's limited event set, acknowledgements, retry routing, and Dead-letter Queue direction without Kafka-level operational overhead. MinIO provides local object-storage behavior compatible with Docker Compose and future S3-style integrations.
+
+### Consequences
+Application-level Outbox, idempotency, aggregate-version handling, and the minimum Phase 1 DLQ/replay boundary remain governed by their separate requirements and open decisions. MinIO buckets shall not be public by default; Lost-and-Found Service controls metadata and approved access references.
+
+### Source
+- Planning Baseline review, `Q-040`
+- ARCH-005, ARCH-006, EVENT-001 through EVENT-005, and SEC-004
+
+## DEC-017 - Supply Local Configuration Through Environment Variables
+
+### Status
+Accepted
+
+### Decision
+Docker Compose shall supply local configuration through environment variables. The repository shall contain a non-secret `.env.example`; the real `.env` shall remain outside Git. Each service shall receive only the configuration and credentials it requires.
+
+### Rationale
+This convention provides a lightweight and documented local setup without introducing a production secret-management platform during Phase 1 planning.
+
+### Consequences
+Services must fail clearly when required configuration is missing. Real credentials must not be committed. Local `.env` values remain developer-machine secrets, and a production-grade secret manager is deferred until a production-like environment requires it. Exact variable names and secret-generation workflow remain implementation-planning details.
+
+### Source
+- Planning Baseline review, `Q-037`
+- OPS-001, OPS-002, SEC-002, and DEC-013

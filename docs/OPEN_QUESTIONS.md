@@ -1,6 +1,16 @@
 # LostLink Open Questions
 
-These questions collect decisions not resolved by the primary sources. They are not answered here. No question silently changes a requirement or accepted decision.
+This document tracks questions that the primary sources did not resolve. Open questions do not silently change a requirement or accepted decision. Resolved questions are retained at the end for traceability and point to their accepted decision records.
+
+## Decision Triage
+
+| Classification | Questions | Handling |
+| --- | --- | --- |
+| `DECIDE_BEFORE_FEATURE` | `Q-001`-`Q-017`, `Q-019`-`Q-035` | Resolve only before the feature or milestone identified by each question. |
+| `DEFERRED` | `Q-018`, `Q-036` | Keep deferred until the optional draft-description capability is selected or production-like release expectations exist. |
+| `RESOLVED` | `Q-037`-`Q-040` | Accepted during Planning Baseline review; see `docs/DECISIONS.md` and `docs/TECH_STACK.md`. |
+
+Current unresolved total: 36 questions. This triage applies YAGNI: an unresolved question is not automatically a blocker.
 
 ## Q-001 - May a User Draft or Submit a Found Report Before Counter Intake?
 
@@ -506,7 +516,18 @@ Failure/retry behavior is defined, but backup/restore objectives are not.
 ### Decision Needed Before
 Production-like data protection or release readiness.
 
+## Resolved Questions
+
 ## Q-037 - How Are Local Configuration and Secrets Supplied to Docker Compose?
+
+### Status
+Resolved
+
+### Decision
+Use environment variables supplied through Docker Compose. Commit a non-secret `.env.example`, keep the real `.env` outside Git, provide each service only the configuration it requires, and defer a production secret manager until a production-like environment requires one.
+
+### Decision Record
+`DEC-017`
 
 ### Category
 Operations
@@ -522,6 +543,15 @@ Milestone 1 completion criteria and developer onboarding.
 
 ## Q-038 - What Repository Layout Will Represent the Services?
 
+### Status
+Resolved
+
+### Decision
+Use one monorepo while preserving a separate project, process, container, build/start boundary, and deployment lifecycle for each service. Monorepo placement does not permit shared domain implementation.
+
+### Decision Record
+`DEC-014`
+
 ### Category
 Technology Stack
 
@@ -536,6 +566,15 @@ Project scaffolding.
 
 ## Q-039 - Which Frontend, Gateway, and Service Frameworks/Runtimes Will Be Used?
 
+### Status
+Resolved
+
+### Decision
+Use React, TypeScript, and Vite for Web Client; Node.js, TypeScript, and NestJS for API Gateway, Identity Service, Lost-and-Found Service, and Matching Service; and Python with FastAPI for the optional AI Inference Service.
+
+### Decision Record
+`DEC-015`
+
 ### Category
 Technology Stack
 
@@ -549,6 +588,15 @@ The system is a responsive Web Client plus backend services; no frameworks/runti
 Project scaffolding and implementation planning.
 
 ## Q-040 - Which Broker and Object-Storage Implementations Will Be Used?
+
+### Status
+Resolved
+
+### Decision
+Use RabbitMQ as the Phase 1 Message Broker and MinIO as the local S3-compatible Object Storage implementation.
+
+### Decision Record
+`DEC-016`
 
 ### Category
 Technology Stack
