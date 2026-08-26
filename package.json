@@ -1,0 +1,28 @@
+{
+  "name": "lostlink",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "npm@11.17.0",
+  "engines": {
+    "node": "24.19.0",
+    "npm": "11.17.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "services/api-gateway",
+    "services/identity-service",
+    "services/lost-found-service",
+    "services/matching-service",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test:architecture && npm run test --workspaces --if-present",
+    "test:architecture": "node --test tests/architecture/*.test.mjs",
+    "compose:config": "docker compose config --quiet",
+    "compose:up": "docker compose up -d --build --wait",
+    "compose:down": "docker compose down",
+    "verify": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-foundation.ps1"
+  }
+}
