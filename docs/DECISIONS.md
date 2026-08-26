@@ -271,22 +271,23 @@ The project operates two runtimes. Matching Service retains Rule-based filtering
 - Planning Baseline review, `Q-039`
 - DEC-005 through DEC-008
 
-## DEC-016 - Use RabbitMQ and MinIO in Phase 1
+## DEC-016 - Use RabbitMQ and Garage in Phase 1
 
 ### Status
 Accepted
 
 ### Decision
-RabbitMQ shall implement the Phase 1 Message Broker, and MinIO shall provide the local S3-compatible Object Storage implementation.
+RabbitMQ shall implement the Phase 1 Message Broker, and Garage shall provide the local S3-compatible Object Storage implementation.
 
 ### Rationale
-RabbitMQ supports the project's limited event set, acknowledgements, retry routing, and Dead-letter Queue direction without Kafka-level operational overhead. MinIO provides local object-storage behavior compatible with Docker Compose and future S3-style integrations.
+RabbitMQ supports the project's limited event set, acknowledgements, retry routing, and Dead-letter Queue direction without Kafka-level operational overhead. Garage provides lightweight, self-hosted S3-compatible object storage suitable for the single-node local Phase 1 environment. The primary sources require Object Storage but do not prescribe a product, so replacing the earlier object-storage selection does not change a product requirement or service boundary.
 
 ### Consequences
-Application-level Outbox, idempotency, aggregate-version handling, and the minimum Phase 1 DLQ/replay boundary remain governed by their separate requirements and open decisions. MinIO buckets shall not be public by default; Lost-and-Found Service controls metadata and approved access references.
+Application-level Outbox, idempotency, aggregate-version handling, and the minimum Phase 1 DLQ/replay boundary remain governed by their separate requirements and open decisions. Garage buckets shall not be public by default. Only Lost-and-Found Service receives Garage credentials and controls object metadata and approved access references. LostLink shall use the S3-compatible interface without depending on unsupported or unnecessary object ACL features.
 
 ### Source
 - Planning Baseline review, `Q-040`
+- Approved Milestone 1 foundation design, 2026-08-26
 - ARCH-005, ARCH-006, EVENT-001 through EVENT-005, and SEC-004
 
 ## DEC-017 - Supply Local Configuration Through Environment Variables
@@ -306,3 +307,24 @@ Services must fail clearly when required configuration is missing. Real credenti
 ### Source
 - Planning Baseline review, `Q-037`
 - OPS-001, OPS-002, SEC-002, and DEC-013
+
+## DEC-018 - Standardize the Milestone 1 Foundation Toolchain
+
+### Status
+Accepted
+
+### Decision
+Milestone 1 shall use npm workspaces without Turborepo; stable pinned Node.js 24 LTS, NestJS 11, React 19.2, Vite 8, Python 3.13, FastAPI, Prisma 7 GA, PostgreSQL 18, RabbitMQ 4.3, Garage 2.3, and Docker Compose. JavaScript dependencies shall be locked by `package-lock.json`; Python dependencies shall be exact-pinned in `requirements.txt`; container images shall use explicit non-floating tags.
+
+NestJS configuration shall use `@nestjs/config` with Joi validation; FastAPI configuration shall use Pydantic Settings. NestJS tests shall use Jest and Supertest, Web Client tests shall use Vitest and React Testing Library, and FastAPI tests shall use pytest and TestClient. HTTP services shall expose separate liveness and readiness endpoints and document only implemented endpoints with OpenAPI.
+
+### Rationale
+The selected versions and tools provide a stable, student-approachable foundation while preserving the approved microservice boundaries. Pinning makes the local environment reproducible, and the narrow Milestone 1 toolset avoids premature orchestration or observability complexity.
+
+### Consequences
+Each service remains an independent project and process even though Node.js projects share an npm workspace. AI Inference Service remains a separate Python project. Patch versions are verified before scaffolding and then recorded in lockfiles, exact Python requirements, and explicit container tags. Milestone 1 provides health, configuration, structured logging, OpenAPI, and smoke-test foundations only; it does not add domain endpoints or business logic.
+
+### Source
+- Approved Milestone 1 foundation design, 2026-08-26
+- DEC-013 through DEC-017
+- ARCH-002, ARCH-003, ARCH-004, ARCH-006, OPS-001, and OPS-002

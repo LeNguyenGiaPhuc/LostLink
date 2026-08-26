@@ -547,10 +547,10 @@ Milestone 1 completion criteria and developer onboarding.
 Resolved
 
 ### Decision
-Use one monorepo while preserving a separate project, process, container, build/start boundary, and deployment lifecycle for each service. Monorepo placement does not permit shared domain implementation.
+Use one monorepo with root npm workspaces and no Turborepo in Phase 1. Web Client lives under `apps/web`; backend and AI components live under `services/`; any shared package is contract-only. Each component preserves a separate project, process, container, build/start boundary, and deployment lifecycle. AI Inference Service remains an independent Python project outside the npm workspace.
 
 ### Decision Record
-`DEC-014`
+`DEC-014`, `DEC-018`
 
 ### Category
 Technology Stack
@@ -570,10 +570,10 @@ Project scaffolding.
 Resolved
 
 ### Decision
-Use React, TypeScript, and Vite for Web Client; Node.js, TypeScript, and NestJS for API Gateway, Identity Service, Lost-and-Found Service, and Matching Service; and Python with FastAPI for the optional AI Inference Service.
+Use React 19.2, TypeScript, and Vite 8 for Web Client; Node.js 24 LTS, TypeScript, and NestJS 11 for API Gateway, Identity Service, Lost-and-Found Service, and Matching Service; and Python 3.13 with FastAPI for the optional AI Inference Service. Use Prisma 7 GA for stateful-service ORM/migrations, npm workspaces and lockfile for JavaScript packages, and exact-pinned `requirements.txt` for Python. Testing and configuration conventions follow the approved Milestone 1 foundation design.
 
 ### Decision Record
-`DEC-015`
+`DEC-015`, `DEC-018`
 
 ### Category
 Technology Stack
@@ -593,7 +593,7 @@ Project scaffolding and implementation planning.
 Resolved
 
 ### Decision
-Use RabbitMQ as the Phase 1 Message Broker and MinIO as the local S3-compatible Object Storage implementation.
+Use RabbitMQ 4.3 as the Phase 1 Message Broker and Garage 2.3 as the single-node local S3-compatible Object Storage implementation. Garage buckets remain private by default, and only Lost-and-Found Service receives storage credentials.
 
 ### Decision Record
 `DEC-016`

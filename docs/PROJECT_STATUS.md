@@ -10,7 +10,7 @@ LostLink has not entered implementation. Planning Baseline v1 was explicitly app
 
 **Milestone 1 - Executable Service and Infrastructure Foundation** - `NOT_STARTED`
 
-Planning Baseline Review and Freeze is `COMPLETED`. Milestone 1 is the next milestone, but no implementation planning or implementation work has started without separate authorization.
+Planning Baseline Review and Freeze is `COMPLETED`. The Milestone 1 design has received human approval and its detailed implementation plan is `READY_FOR_REVIEW`; implementation remains `NOT_STARTED` and requires separate authorization.
 
 ## Overall Status
 
@@ -19,6 +19,7 @@ Planning Baseline Review and Freeze is `COMPLETED`. Milestone 1 is the next mile
 - Planning readiness: 5 / 5 actions completed.
 - Completed readiness actions: original source documents are present; the planning documentation set has been generated; initial Milestone 1 technology decisions have been approved and documented; all 72 requirements have planning-level traceability; human review and freeze approval are complete.
 - Planning Baseline v1 is `COMPLETED` and `FROZEN` as of 2026-08-24.
+- The approved 2026-08-26 controlled amendment replaces MinIO with Garage and records the Milestone 1 foundation toolchain; no product requirement or service boundary changed.
 - Project phase remains `PLANNING` until implementation is separately authorized.
 - Implementation progress: 0%.
 
@@ -27,7 +28,7 @@ Planning Baseline Review and Freeze is `COMPLETED`. Milestone 1 is the next mile
 | Milestone | Status | Notes |
 |---|---|---|
 | Planning Baseline Review and Freeze (pre-implementation gate) | `COMPLETED` | Planning Baseline v1 was explicitly approved and frozen on 2026-08-24. |
-| Milestone 1 - Executable Service and Infrastructure Foundation | `NOT_STARTED` | Baseline and initial technology dependencies are ready; awaiting explicit authorization to create the Milestone 1 implementation plan. |
+| Milestone 1 - Executable Service and Infrastructure Foundation | `NOT_STARTED` | Design approved; implementation plan is `READY_FOR_REVIEW`. No application implementation has started. |
 | Milestone 2 - Identity, Gateway, and Edge Security | `NOT_STARTED` | Depends on Milestone 1 and approved authentication/internal-credential decisions. |
 | Milestone 3 - Reports, Moderation, Privacy, and Object Storage | `NOT_STARTED` | Depends on Milestones 1-2 and unresolved report/privacy business rules. |
 | Milestone 4 - Domain Events and ACTIVE-Report Read Model | `NOT_STARTED` | Depends on Milestones 1 and 3 and the Phase 1 Outbox/DLQ boundary. |
@@ -56,10 +57,13 @@ Planning Baseline Review and Freeze is `COMPLETED`. Milestone 1 is the next mile
 - All 72 requirements mapped to owner, primary milestone, planned verification, and initial `NOT_STARTED` status in `docs/TRACEABILITY.md`.
 - Planning consistency review completed without identifying a new `SOURCE_CONFLICT`.
 - Planning Baseline v1 explicitly approved and frozen on 2026-08-24.
+- Milestone 1 foundation design approved by the user on 2026-08-26.
+- Controlled planning amendment recorded Garage 2.3, pinned foundation versions, workspace, ORM, configuration, health, OpenAPI, logging, and test conventions without changing requirements or service ownership.
+- Detailed Milestone 1 implementation plan created at `docs/superpowers/plans/2026-08-26-lostlink-milestone-1-foundation.md`.
 
 ## In Progress
 
-- None. Waiting for explicit authorization to begin Milestone 1 implementation planning.
+- Human review of the detailed Milestone 1 implementation plan.
 
 No implementation feature is currently in progress.
 
@@ -84,9 +88,9 @@ The complete decision register remains in `docs/OPEN_QUESTIONS.md`.
 
 ## Next Actions
 
-1. Obtain explicit authorization to begin Milestone 1 implementation planning.
-2. Decide only implementation details that block Milestone 1, such as supported versions, workspace/package tooling, and health/configuration conventions.
-3. Create and review a detailed Milestone 1 implementation plan before scaffolding.
+1. Review `docs/superpowers/plans/2026-08-26-lostlink-milestone-1-foundation.md`.
+2. Request any plan corrections before implementation.
+3. Explicitly authorize Milestone 1 implementation and choose an approved execution workflow.
 4. Resolve remaining questions only when they become blocking for their relevant feature or milestone.
 
 ## Implementation Status
@@ -119,6 +123,7 @@ Testing: `NOT_STARTED`
 - Codex must not mark the Planning Baseline, a milestone, or a project phase as `COMPLETED`, or move the project to the next phase, when human review or approval is required.
 - In that situation, Codex must record `READY_FOR_REVIEW` in Notes or current status and wait for explicit human approval.
 - Planning Baseline v1 is frozen. Future changes must identify affected requirements and planning documents and receive explicit human approval; the baseline must not drift silently.
+- The 2026-08-26 amendment changes only approved technology/tooling decisions. Requirement count, acceptance criteria, architecture components, and service ownership remain unchanged.
 
 ## Update Rules
 
