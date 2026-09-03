@@ -1,0 +1,139 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - "8080:4173"
+    networks:
+      - lostlink
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: services/api-gateway/Dockerfile
+    environment:
+      PORT: 3000
+      LOG_LEVEL: info
+    ports:
+      - "3000:3000"
+    networks:
+      - lostlink
+
+  identity-service:
+    build:
+      context: .
+      dockerfile: services/identity-service/Dockerfile
+    environment:
+      PORT: 3001
+      LOG_LEVEL: info
+      DATABASE_URL: postgresql://identity_service:${IDENTITY_DB_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=identity_schema
+    networks:
+      - lostlink
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  lost-found-service:
+    build:
+      context: .
+      dockerfile: services/lost-found-service/Dockerfile
+    environment:
+      PORT: 3002
+      LOG_LEVEL: info
+      DATABASE_URL: postgresql://lost_found_service:${LOST_FOUND_DB_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=lost_found_schema
+      S3_ENDPOINT: http://garage:3900
+      S3_REGION: ${GARAGE_REGION}
+      S3_BUCKET: ${GARAGE_BUCKET}
+      S3_ACCESS_KEY_ID: ${GARAGE_ACCESS_KEY_ID}
+      S3_SECRET_ACCESS_KEY: ${GARAGE_SECRET_ACCESS_KEY}
+    networks:
+      - lostlink
+    depends_on:
+      postgres:
+        condition: service_healthy
+      garage:
+        condition: service_healthy
+
+  matching-service:
+    build:
+      context: .
+      dockerfile: services/matching-service/Dockerfile
+    environment:
+      PORT: 3003
+      LOG_LEVEL: info
+      DATABASE_URL: postgresql://matching_service:${MATCHING_DB_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=matching_schema
+      AI_INFERENCE_URL: http://ai-inference-service:8000
+    networks:
+      - lostlink
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  ai-inference-service:
+    build:
+      context: .
+      dockerfile: services/ai-inference-service/Dockerfile
+    environment:
+      PORT: 8000
+      LOG_LEVEL: INFO
+    networks:
+      - lostlink
+
+  postgres:
+    image: postgres:18.6-bookworm
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      IDENTITY_DB_PASSWORD: ${IDENTITY_DB_PASSWORD}
+      LOST_FOUND_DB_PASSWORD: ${LOST_FOUND_DB_PASSWORD}
+      MATCHING_DB_PASSWORD: ${MATCHING_DB_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - lostlink
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+
+  rabbitmq:
+    image: rabbitmq:4.3.5-management
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - lostlink
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+
+  garage:
+    image: dxflrs/garage:v2.3.0
+    command: ["/garage", "server", "--single-node", "--default-bucket"]
+    environment:
+      GARAGE_DEFAULT_ACCESS_KEY: ${GARAGE_ACCESS_KEY_ID}
+      GARAGE_DEFAULT_SECRET_KEY: ${GARAGE_SECRET_ACCESS_KEY}
+      GARAGE_DEFAULT_BUCKET: ${GARAGE_BUCKET}
+    volumes:
+      - garage-meta:/var/lib/garage/meta
+      - garage-data:/var/lib/garage/data
+      - ./infra/garage/garage.toml:/etc/garage.toml:ro
+    networks:
+      - lostlink
+    healthcheck:
+      test: ["CMD", "/garage", "status"]
+
+networks:
+  lostlink:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  rabbitmq-data:
+  garage-meta:
+  garage-data:
