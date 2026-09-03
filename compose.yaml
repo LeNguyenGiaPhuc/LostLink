@@ -95,6 +95,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql
       - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
+      - ./infra/postgres/check:/checks:ro
     networks:
       - lostlink
     healthcheck:

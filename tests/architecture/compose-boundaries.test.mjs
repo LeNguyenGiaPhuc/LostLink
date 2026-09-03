@@ -57,6 +57,10 @@ test('PostgreSQL 18 and Garage use their required persistent mounts', async () =
     /postgres-data:\/var\/lib\/postgresql(?:\r?\n|$)/,
   );
   assert.match(
+    serviceBlock(compose, 'postgres'),
+    /\.\/infra\/postgres\/check:\/checks:ro/,
+  );
+  assert.match(
     serviceBlock(compose, 'garage'),
     /\.\/infra\/garage\/garage\.toml:\/etc\/garage\.toml:ro/,
   );
